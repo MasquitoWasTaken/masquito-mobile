@@ -26,6 +26,7 @@ dependencies:
   image_picker:
   http:
   charts_flutter:
+  url_launcher:
 
 
   # The following adds the Cupertino Icons font to your application.

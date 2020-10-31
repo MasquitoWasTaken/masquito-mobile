@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,6 +14,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     return MaterialApp(
       title: 'Masquito',
       theme: ThemeData(
@@ -72,9 +78,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     if (_data == null) {
       _data = {
-        'map': 0.0,
-        'improper': 0.0,
-        'none': 0.0,
+        'mask': '0.0',
+        'improper': '0.0',
+        'none': '0.0',
       };
     }
 
@@ -105,6 +111,68 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     return Scaffold(
+      drawer: Drawer(
+          child: ListView(
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.indigoAccent,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Masquito",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "See if you're wearing your mask right",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.code),
+            title: Text(
+              "Source code (Github)",
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
+            onTap: _redirectGithub,
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text(
+              "Note: this app sends data to a server, but no images are stored",
+              style: TextStyle(
+                fontSize: 15,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text(
+              "Note: the AI model behind this app is still being developed",
+              style: TextStyle(
+                fontSize: 15,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            onTap: () => {},
+          ),
+        ],
+      )),
       appBar: AppBar(
         title: Text(widget.title),
         backgroundColor: Colors.indigo,
@@ -133,5 +201,14 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.indigoAccent,
       ),
     );
+  }
+
+  _redirectGithub() async {
+    const url = "https://github.com/MasquitoWasTaken";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
