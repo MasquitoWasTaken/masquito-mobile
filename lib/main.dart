@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() {
   runApp(MyApp());
@@ -30,11 +31,21 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+class ConfidencePerClass {
+  final String category;
+  final double confidence;
+  final charts.Color color;
+
+  ConfidencePerClass(this.category, this.confidence, Color color)
+      : this.color = charts.Color(
+            r: color.red, g: color.green, b: color.blue, a: color.alpha);
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   final String _apiUrl = 'http://192.168.1.33:8080/mask';
   final ImagePicker _picker = ImagePicker();
 
-  String _result = 'No image taken yet';
+  var _data;
 
   void _onImageButtonPressed(ImageSource source) async {
     final pickedFile = await _picker.getImage(
@@ -46,9 +57,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final bytes = File(pickedFile.path).readAsBytesSync();
     final encoded = base64Encode(bytes);
     String newDataUri = 'data:image/jpeg;base64,' + encoded;
-    setState(() {
-      _result = "Loading results";
-    });
 
     print("hi");
     Response res = await post(
@@ -56,26 +64,73 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     String body = res.body;
     this.setState(() {
-      _result = body;
+      _data = jsonDecode(body);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_data == null) {
+      _data = {
+        'map': 0.0,
+        'improper': 0.0,
+        'none': 0.0,
+      };
+    }
+
+    List<ConfidencePerClass> data = [
+      ConfidencePerClass(
+          'mask', double.parse(_data['mask']) / 100, Colors.indigo[900]),
+      ConfidencePerClass('improper', double.parse(_data['improper']) / 100,
+          Colors.purple[900]),
+      ConfidencePerClass(
+          'none', double.parse(_data['none']) / 100, Colors.purple[700]),
+    ];
+
+    var series = [
+      charts.Series(
+        domainFn: (ConfidencePerClass confidenceData, _) =>
+            confidenceData.category,
+        measureFn: (ConfidencePerClass confidenceData, _) =>
+            confidenceData.confidence,
+        colorFn: (ConfidencePerClass confidenceData, _) => confidenceData.color,
+        id: 'Confidence',
+        data: data,
+      ),
+    ];
+
+    var chart = charts.BarChart(
+      series,
+      animate: true,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.indigo,
       ),
       body: Center(
-        child: Text(_result),
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: AspectRatio(
+            aspectRatio: 2 / 3,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
+              child: Padding(
+                padding: EdgeInsets.all(16),
+                child: chart,
+              ),
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _onImageButtonPressed(ImageSource.camera);
         },
         child: Icon(Icons.camera_alt),
-        backgroundColor: Colors.pinkAccent,
+        backgroundColor: Colors.indigoAccent,
       ),
     );
   }
