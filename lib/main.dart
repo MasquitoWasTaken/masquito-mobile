@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.indigoAccent,
+              color: Colors.indigo,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,6 +148,17 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             onTap: _redirectGithub,
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text(
+              "Note: try to zoom in on faces",
+              style: TextStyle(
+                fontSize: 15,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            onTap: () => {},
           ),
           ListTile(
             leading: Icon(Icons.info),
