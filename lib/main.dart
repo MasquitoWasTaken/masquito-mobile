@@ -51,7 +51,11 @@ class _MyHomePageState extends State<MyHomePage> {
   final String _apiUrl = 'http://192.168.1.33:8080/mask';
   final ImagePicker _picker = ImagePicker();
 
-  var _data;
+  var _data = {
+    'mask': '0.0',
+    'improper': '0.0',
+    'none': '0.0',
+  };
 
   void _onImageButtonPressed(ImageSource source) async {
     final pickedFile = await _picker.getImage(
