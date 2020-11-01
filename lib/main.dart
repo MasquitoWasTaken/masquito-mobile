@@ -58,6 +58,13 @@ class _MyHomePageState extends State<MyHomePage> {
   };
 
   void _onImageButtonPressed(ImageSource source) async {
+    this.setState(() {
+      _data = {
+        'mask': '0.0',
+        'improper': '0.0',
+        'none': '0.0',
+      };
+    });
     final pickedFile = await _picker.getImage(
       source: source,
       maxWidth: null,
@@ -89,11 +96,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
     List<ConfidencePerClass> data = [
       ConfidencePerClass(
-          'mask', double.parse(_data['mask']) / 100, Colors.indigo[900]),
-      ConfidencePerClass('improper', double.parse(_data['improper']) / 100,
+          'Mask', double.parse(_data['mask']) / 100, Colors.indigo[900]),
+      ConfidencePerClass('Improper', double.parse(_data['improper']) / 100,
           Colors.purple[900]),
       ConfidencePerClass(
-          'none', double.parse(_data['none']) / 100, Colors.purple[700]),
+          'None', double.parse(_data['none']) / 100, Colors.purple[700]),
     ];
 
     var series = [
@@ -103,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
         measureFn: (ConfidencePerClass confidenceData, _) =>
             confidenceData.confidence,
         colorFn: (ConfidencePerClass confidenceData, _) => confidenceData.color,
-        id: 'Confidence',
+        id: 'confidence',
         data: data,
       ),
     ];
@@ -111,6 +118,13 @@ class _MyHomePageState extends State<MyHomePage> {
     var chart = charts.BarChart(
       series,
       animate: true,
+      behaviors: [
+        charts.ChartTitle(
+          'Confidence Scores',
+          subTitle: 'Predicted by an AI model',
+          innerPadding: 25,
+        ),
+      ],
     );
 
     return Scaffold(
@@ -155,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             leading: Icon(Icons.info),
             title: Text(
-              "Note: try to zoom in on faces",
+              "Note: zoom in on faces to get better accuracy",
               style: TextStyle(
                 fontSize: 15,
                 fontStyle: FontStyle.italic,
