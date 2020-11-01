@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final String _apiUrl = 'http://192.168.1.33:8080/mask';
   final ImagePicker _picker = ImagePicker();
 
-  var _data = {
+  Map<String, dynamic> _data = {
     'mask': '0.0',
     'improper': '0.0',
     'none': '0.0',
@@ -68,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
     final encoded = base64Encode(bytes);
     String newDataUri = 'data:image/jpeg;base64,' + encoded;
 
-    print("hi");
     Response res = await post(
       _apiUrl + "?image=" + newDataUri,
     );
