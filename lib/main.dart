@@ -71,7 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
       maxHeight: null,
       imageQuality: null,
     );
-    final bytes = File(pickedFile.path).readAsBytesSync();
+    final file = File(pickedFile.path);
+    final bytes = file.readAsBytesSync();
+    file.delete();
     final encoded = base64Encode(bytes);
     String newDataUri = 'data:image/jpeg;base64,' + encoded;
 
