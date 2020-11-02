@@ -48,7 +48,7 @@ class ConfidencePerClass {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final String _apiUrl = 'http://192.168.1.33:8080/mask';
+  final String _apiUrl = 'http://javaman.net:8083/mask';
   final ImagePicker _picker = ImagePicker();
 
   Map<String, dynamic> _data = {
