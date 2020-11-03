@@ -171,7 +171,18 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             leading: Icon(Icons.info),
             title: Text(
-              "Note: zoom in on faces to get better accuracy",
+              "Note: zoom in on faces to increase accuracy",
+              style: TextStyle(
+                fontSize: 15,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+            onTap: () => {},
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text(
+              "Note: back-facing cameras are more accurate than front-facing ones",
               style: TextStyle(
                 fontSize: 15,
                 fontStyle: FontStyle.italic,
