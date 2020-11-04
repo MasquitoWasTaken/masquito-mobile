@@ -141,12 +141,26 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Masquito",
-                  style: TextStyle(
-                    fontSize: 25,
-                    color: Colors.white,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Masquito",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 37,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Image(
+                      image:
+                          AssetImage('assets/icon/icon_inverted_cropped.png'),
+                      height: 75,
+                      width: 75,
+                      alignment: Alignment.topRight,
+                    ),
+                  ],
                 ),
                 Text(
                   "See if you're wearing your mask right",
