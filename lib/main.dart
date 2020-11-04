@@ -149,15 +149,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       "Masquito",
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
-                        fontSize: 37,
+                        fontSize: 31,
                         color: Colors.white,
                       ),
                     ),
                     Image(
                       image:
                           AssetImage('assets/icon/icon_inverted_cropped.png'),
-                      height: 75,
-                      width: 75,
+                      height: 63,
+                      width: 63,
                       alignment: Alignment.topRight,
                     ),
                   ],
